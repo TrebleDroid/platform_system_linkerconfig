@@ -25,7 +25,7 @@ namespace linkerconfig {
 namespace modules {
 
 bool IsVndkLiteDevice() {
-  return Variables::GetValue("ro.vndk.lite").value_or("") == "true";
+  return false;
 }
 
 bool IsVndkInSystemNamespace() {
