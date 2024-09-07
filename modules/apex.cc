@@ -305,7 +305,8 @@ bool ApexInfo::InVendor() const {
   if (StartsWith(original_path, "/vendor/apex/") ||
       StartsWith(original_path, "/system/vendor/apex/") ||
       StartsWith(original_path, "/odm/apex/") ||
-      StartsWith(original_path, "/system/odm/apex/")) {
+      StartsWith(original_path, "/vendor/odm/apex/") ||
+      StartsWith(original_path, "/system/vendor/odm/apex/")) {
     return true;
   }
   return false;
