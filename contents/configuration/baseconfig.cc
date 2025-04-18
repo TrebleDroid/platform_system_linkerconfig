@@ -22,17 +22,6 @@
 using android::linkerconfig::modules::DirToSection;
 using android::linkerconfig::modules::Section;
 
-namespace {
-void RemoveSection(std::vector<DirToSection>& dir_to_section,
-                   const std::string& to_be_removed) {
-  dir_to_section.erase(
-      std::remove_if(dir_to_section.begin(),
-                     dir_to_section.end(),
-                     [&](auto pair) { return (pair.second == to_be_removed); }),
-      dir_to_section.end());
-}
-}  // namespace
-
 namespace android {
 namespace linkerconfig {
 namespace contents {
@@ -95,13 +84,8 @@ android::linkerconfig::modules::Configuration CreateBaseConfiguration(
   };
 
   sections.emplace_back(BuildSystemSection(ctx));
-  if (android::linkerconfig::modules::IsTreblelizedDevice()) {
-    sections.emplace_back(BuildVendorSection(ctx));
-    sections.emplace_back(BuildProductSection(ctx));
-  } else {
-    RemoveSection(dirToSection, "product");
-    RemoveSection(dirToSection, "vendor");
-  }
+  sections.emplace_back(BuildVendorSection(ctx));
+  sections.emplace_back(BuildProductSection(ctx));
 
   sections.emplace_back(BuildUnrestrictedSection(ctx));
   sections.emplace_back(BuildPostInstallSection(ctx));

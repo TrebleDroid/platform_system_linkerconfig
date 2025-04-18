@@ -30,9 +30,6 @@ Namespace BuildSystemNamespace([[maybe_unused]] const Context& ctx) {
   Namespace ns("system", /*is_isolated=*/false, /*is_visible=*/false);
   ns.AddSearchPath("/system/${LIB}");
   ns.AddSearchPath(Var("SYSTEM_EXT") + "/${LIB}");
-  if (!android::linkerconfig::modules::IsTreblelizedDevice()) {
-    ns.AddSearchPath(Var("PRODUCT") + "/${LIB}");
-  }
 
   SetupSystemPermittedPaths(&ns);
 

@@ -255,21 +255,12 @@ bool ApexInfo::InSystem() const {
   if (partition.compare("SYSTEM_EXT") == 0) {
     return true;
   }
-  // /product partition if it's not separated from "system"
-  if (!IsTreblelizedDevice() && partition.compare("PRODUCT") == 0) {
-    return true;
-  }
   return false;
 }
 
 bool ApexInfo::InProduct() const {
   // /product partition if it's separated from "system"
-  if (IsTreblelizedDevice()) {
-    if (partition.compare("PRODUCT") == 0) {
-      return true;
-    }
-  }
-  return false;
+  return (partition.compare("PRODUCT") == 0);
 }
 
 bool ApexInfo::InVendor() const {

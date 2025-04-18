@@ -57,14 +57,6 @@ Namespace BuildSphalNamespace([[maybe_unused]] const Context& ctx) {
     ns.GetLink(ctx.GetSystemNamespaceName()).AddSharedLib("libft2.so");
   }
 
-  if (ctx.IsApexBinaryConfig() &&
-      !android::linkerconfig::modules::IsTreblelizedDevice()) {
-    // If device is legacy, let Sphal libraries access to system lib path for
-    // VNDK-SP libraries
-    ns.AddSearchPath("/system/${LIB}");
-    ns.AddPermittedPath("/system/${LIB}");
-  }
-
   AddLlndkLibraries(ctx, &ns, VndkUserPartition::Vendor);
 
   if (ctx.IsApexBinaryConfig()) {

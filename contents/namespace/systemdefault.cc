@@ -76,37 +76,22 @@ void SetupSystemPermittedPaths(Namespace* ns) {
   for (const std::string& path : permitted_paths) {
     ns->AddPermittedPath(path);
   }
-  if (!android::linkerconfig::modules::IsTreblelizedDevice()) {
-    // System processes can use product libs only if device is not treblelized.
-    ns->AddPermittedPath(product + "/${LIB}");
-  }
 }
 
 Namespace BuildSystemDefaultNamespace([[maybe_unused]] const Context& ctx) {
-  bool is_fully_treblelized =
-      android::linkerconfig::modules::IsTreblelizedDevice();
   std::string product = Var("PRODUCT");
   std::string system_ext = Var("SYSTEM_EXT");
 
   // Visible to allow links to be created at runtime, e.g. through
   // android_link_namespaces in libnativeloader.
   Namespace ns("default",
-               /*is_isolated=*/is_fully_treblelized,
+               /*is_isolated=*/true,
                /*is_visible=*/true);
 
   ns.AddSearchPath("/system/${LIB}");
   ns.AddSearchPath(system_ext + "/${LIB}");
-  if (!is_fully_treblelized) {
-    // System processes can search product libs only if product VNDK is not
-    // enforced.
-    ns.AddSearchPath(product + "/${LIB}");
-    ns.AddSearchPath("/vendor/${LIB}");
-    ns.AddSearchPath("/odm/${LIB}");
-  }
 
-  if (is_fully_treblelized) {
-    SetupSystemPermittedPaths(&ns);
-  }
+  SetupSystemPermittedPaths(&ns);
 
   ns.AddRequires(ctx.GetSystemRequireLibs());
   ns.AddProvides(ctx.GetSystemProvideLibs());
