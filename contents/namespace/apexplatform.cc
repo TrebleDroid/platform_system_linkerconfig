@@ -34,9 +34,6 @@ Namespace BuildApexPlatformNamespace([[maybe_unused]] const Context& ctx) {
 
   ns.AddSearchPath("/system/${LIB}");
   ns.AddSearchPath(Var("SYSTEM_EXT") + "/${LIB}");
-  if (!android::linkerconfig::modules::IsTreblelizedDevice()) {
-    ns.AddSearchPath(Var("PRODUCT") + "/${LIB}");
-  }
 
   SetupSystemPermittedPaths(&ns);
 

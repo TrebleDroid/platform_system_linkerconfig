@@ -36,7 +36,6 @@
 #include "linkerconfig/configparser.h"
 #include "linkerconfig/context.h"
 #include "linkerconfig/environment.h"
-#include "linkerconfig/legacy.h"
 #include "linkerconfig/log.h"
 #include "linkerconfig/namespacebuilder.h"
 #include "linkerconfig/recovery.h"
@@ -280,10 +279,6 @@ Configuration GetConfiguration(Context& ctx) {
     return android::linkerconfig::contents::CreateRecoveryConfiguration(ctx);
   }
 
-  if (!android::linkerconfig::modules::IsTreblelizedDevice()) {
-    return android::linkerconfig::contents::CreateLegacyConfiguration(ctx);
-  }
-
   // Use base configuration in default
   return android::linkerconfig::contents::CreateBaseConfiguration(ctx);
 }
@@ -417,8 +412,7 @@ int main(int argc, char* argv[]) {
     PrintUsage(EXIT_FAILURE);
   }
 
-  if (android::linkerconfig::modules::IsTreblelizedDevice() &&
-      android::linkerconfig::modules::IsVndkLiteDevice()) {
+  if (android::linkerconfig::modules::IsVndkLiteDevice()) {
     LOG(ERROR) << "Linkerconfig no longer supports VNDK-Lite configuration";
     exit(EXIT_FAILURE);
   }

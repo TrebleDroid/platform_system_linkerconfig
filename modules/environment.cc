@@ -23,9 +23,6 @@
 namespace android {
 namespace linkerconfig {
 namespace modules {
-bool IsTreblelizedDevice() {
-  return Variables::GetValue("ro.treble.enabled").value_or("false") == "true";
-}
 
 bool IsVndkLiteDevice() {
   return Variables::GetValue("ro.vndk.lite").value_or("") == "true";

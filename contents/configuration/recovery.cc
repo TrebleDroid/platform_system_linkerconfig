@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "linkerconfig/legacy.h"
+#include "linkerconfig/configuration.h"
 #include "linkerconfig/sectionbuilder.h"
 
 using android::linkerconfig::contents::LinkerConfigType;
