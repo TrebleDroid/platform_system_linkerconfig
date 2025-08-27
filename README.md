@@ -74,7 +74,7 @@ TODO: a few words about the files
 Check
 [ld.config.format.md](https://android.googlesource.com/platform/bionic/+/master/linker/ld.config.format.md).
 
-### /linkerconfig/apex.libraries.txt
+### /linkerconfig/apex.libraries.config.txt
 
 The file describes libraries exposed from APEXes. libnativeloader is the main
 consumer of this file.
@@ -95,5 +95,23 @@ library_list`.
     -   if `tag` is `jni`, `library_list` is the list of JNI libraries exposed
         by `apex_namespace`.
     -   if `tag` is `public`, `library_list` is the list of public libraries
-        exposed by `apex_namespace`. Here, public libraries are the libs listed
-        in `/system/etc/public.libraries.txt.`
+        exposed by `apex_namespace` (which means, listed in `provideNativeLibs` in apex_manifest).
+        Public libraries are the libraries listed in `/system/etc/public.libraries.txt` (for system APEXes)
+        or `/vendor/etc/public.libraries.txt` (for vendor APEXes).
+
+For example, when `libfoo.so` is a public library belonging to the vendor
+partition and packaged in a vendor APEX named "com.vendor.android.foo",
+`libfoo.so` should be listed two places:
+- `/vendor/etc/public.libraries.txt'
+- `provideNativeLibs` of the APEX manifest
+
+Then, linkerconfig can generate `/linkerconfig/apex.libraries.config.txt` with
+the following line:
+```
+public com_vendor_android_foo libfoo.so
+```
+
+When an APP wants to use the library, it should declare the library in
+AndroidManifest.xml using `<uses-native-library android:name="libfoo.so" android:required="true">`.
+Then, libnativeloader creates a classloader linker namespace linked to the
+`com_vendor_android_foo` linker namespace with `libfoo.so`.
