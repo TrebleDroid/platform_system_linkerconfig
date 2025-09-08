@@ -94,7 +94,7 @@ library_list`.
 -   `library_list` is colon-separated list of library names.
     -   if `tag` is `jni`, `library_list` is the list of JNI libraries exposed
         by `apex_namespace`.
-    -   if `tag` is `public`, `library_list` is the list of public libraries
+    -   if `tag` is `public` or `vendor_public`, `library_list` is the list of public libraries
         exposed by `apex_namespace` (which means, listed in `provideNativeLibs` in apex_manifest).
         Public libraries are the libraries listed in `/system/etc/public.libraries.txt` (for system APEXes)
         or `/vendor/etc/public.libraries.txt` (for vendor APEXes).
@@ -105,10 +105,10 @@ partition and packaged in a vendor APEX named "com.vendor.android.foo",
 - `/vendor/etc/public.libraries.txt'
 - `provideNativeLibs` of the APEX manifest
 
-Then, linkerconfig can generate `/linkerconfig/apex.libraries.config.txt` with
+Then, linkerconfig generates `/linkerconfig/apex.libraries.config.txt` with
 the following line:
 ```
-public com_vendor_android_foo libfoo.so
+vendor_public com_vendor_android_foo libfoo.so
 ```
 
 When an APP wants to use the library, it should declare the library in

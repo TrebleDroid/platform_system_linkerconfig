@@ -369,7 +369,11 @@ void GenerateApexLibrariesConfig(Context& ctx, const std::string& dir_path) {
           << Join(apex_item.jni_libs, ":") << '\n';
     }
     if (!apex_item.public_libs.empty()) {
-      out << "public " << apex_item.namespace_name << " "
+      std::string tag = "public";
+      if (apex_item.InVendor()) {
+        tag = "vendor_public";
+      }
+      out << tag << " " << apex_item.namespace_name << " "
           << Join(apex_item.public_libs, ":") << '\n';
     }
   }
