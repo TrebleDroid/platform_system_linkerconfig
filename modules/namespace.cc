@@ -57,9 +57,10 @@ namespace modules {
 void InitializeWithApex(Namespace& ns, const ApexInfo& apex_info) {
   ns.AddSearchPath(apex_info.path + "/${LIB}");
   if (apex_info.InVendor()) {
-    // Adding an additional subdir(hw) to make the migration easier because
-    // many vendor modules today are installed in ./hw subdir.
+    // Adding additional subdirs(hw and egl) because many vendor modules today
+    // are installed in ./hw and ./egl (EGL drivers).
     ns.AddSearchPath(apex_info.path + "/${LIB}/hw");
+    ns.AddSearchPath(apex_info.path + "/${LIB}/egl");
   }
   ns.AddPermittedPath(apex_info.path + "/${LIB}");
   ns.AddPermittedPath("/system/${LIB}");
